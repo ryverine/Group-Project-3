@@ -10,12 +10,9 @@ import { ResultList, ResultItem } from "../components/Results";
 
 class Search extends Component {
   state = {
+    searchTerms: "",
+    filter: "",
     results: [],
-    title: "",
-    author: "",
-    description: "",
-    link: "",
-    image: ""
   };
 
   /*componentDidMount() {
@@ -38,9 +35,7 @@ class Search extends Component {
   };
 
   saveBook = (book) => {
-
-
-
+  /*
     API.saveBook(book)
       .then(res => {
         // removed the saved book from the results list.
@@ -70,12 +65,12 @@ class Search extends Component {
 
       })
       .catch(err => console.log(err));
-  };
+    */};
 
 
 
   doGoogleBooksSearch = event =>
-  {
+  {/*
     event.preventDefault();
     var searchText = this.state.title.trim();
     API.googleBooksSearch(searchText).then(res => 
@@ -145,7 +140,90 @@ class Search extends Component {
          });
 
       });
-  };
+    */};
+
+
+  doProductSearch = event =>
+  {
+    event.preventDefault();
+    var searchBy = this.state.filter;
+    var searchTerms = this.state.searchTerms.trim().toLowerCase();
+    // find space characters replace with +
+    var formatSearchTerms = searchTerms.split(' ').join('+').trim();
+    searchBy = "name"; // for now filter is hard-coded, we do want the user to select their filter (name, brand, tag)
+
+    switch (searchBy) 
+    {
+      case "name":
+        this.searchByName(formatSearchTerms);
+        break;
+      case "brand":
+        this.searchByBrand(formatSearchTerms);
+        break;
+      case "tag":
+        this.searchByTag(formatSearchTerms);
+        break;
+      default:
+        alert("Unexpected Search Filter: " + searchBy);
+        break;
+    }
+  }
+
+  searchByName = (searchTerm) =>
+  {
+    console.log("(pages/Search.js) Searching By Name: " + searchTerm);
+
+    API.searchProductByName(searchTerm)
+      .then(res => {
+        console.log("searchProductByName response: ", res);
+
+        this.setState({
+          searchTerms: "",
+          filter: "",
+          results: res.data
+        });
+
+        /*
+        // removed the saved book from the results list.
+
+        // var myFish = ['angel', 'clown', 'drum', 'mandarin', 'sturgeon'];
+        // var removed = myFish.splice(3, 1);
+        // removed is ["mandarin"]
+        // myFish is ["angel", "clown", "drum", "sturgeon"]
+
+        // find index of book
+        var bookIndex = -1;
+        for (var i = 0; i < this.state.results.length; i++)
+        {
+            if(this.state.results[i].link === book.link)
+            {
+                bookIndex = i;
+                break;
+            }
+        }
+
+        if(bookIndex > -1)
+        {
+            var tmpResults = this.state.results;
+            var removedBook = tmpResults.splice(bookIndex,1);
+            this.setState({results: tmpResults});
+        }*/
+      })
+      .catch(err => console.log(err));
+
+  }
+
+  searchByBrand = (searchTerm) =>
+  {
+    console.log("Searching By Name: " + searchTerm);
+  }
+
+  searchByTag = (searchTerm) =>
+  {
+    console.log("Searching By Name: " + searchTerm);
+  }
+
+
 
   render() {
     return (
@@ -161,14 +239,14 @@ class Search extends Component {
             </Jumbotron>
             <form>
               <Input
-                value={this.state.title}
+                value={this.state.searchTerms}
                 onChange={this.handleInputChange}
-                name="productSearch"
+                name="searchTerms"
                 placeholder="Search for a Product!"
               />
               <FormBtn
-                disabled={!(this.state.title)}
-                onClick={this.doGoogleBooksSearch}
+                disabled={!(this.state.searchTerms)}
+                onClick={this.doProductSearch}
               >
                 Find Product
               </FormBtn>
@@ -180,21 +258,16 @@ class Search extends Component {
         <Col size="md-2"></Col>
         <Col size="md-8">
                 {this.state.results.length ? (
-                <ResultList>
-                        {this.state.results.map(result => (
-                        <ResultItem key={result.link} 
-                            title={result.title}
-                            author={result.author}
-                            description={result.description}
-                            link={result.link}
-                            image={result.image}
-                        >
-                            <SaveBtn onClick={() => this.saveBook(result)} />
-                        </ResultItem>
+                <div>
+                <h4>Products Found</h4>
+                        {this.state.results.map(product => (
+                        <div key={product._id}>
+                          <a href={"/product/" + product._id}><strong>{product.name}</strong></a> ({product.brand})   
+                        </div>
                         ))}
-                </ResultList>
+                </div>
                     ) : (
-                        <h3>No Results to Display</h3>
+                        <h4>No Results to Display</h4>
                     )}
           </Col>
           <Col size="md-2"></Col>

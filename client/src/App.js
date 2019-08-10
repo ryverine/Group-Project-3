@@ -27,6 +27,9 @@ function App() {
           <Route exact path="/locations" component={Locations} />
           <Route exact path="/store/:id" component={Store} />
           <Route exact path="/product/:id" component={Product} />
+          <Route exact path="product/name/:terms" component={Product} />
+          {/*<Route exact path="search/brand/:terms" component={Search} />*/}
+          {/*<Route exact path="search/tag/:terms" component={Search} />*/}
           {/* 
             <Route exact path="/locations" component={Locations} />
             <Route exact path="/user/:id" component={User} />

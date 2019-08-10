@@ -52,6 +52,31 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  findProductByName: function(req, res){
+    // https://medium.com/@erparshantarora/partial-text-search-vs-full-text-search-in-mongoose-7e04f7bd0783
+    console.log("(controllers/dbController.js) findProductByName: " + req.params.terms);
+    //req.params.terms: find + and replace with space
+    var reformatTerms = req.params.terms.split('+').join(' ').trim();
+    console.log("(controllers/dbController.js) reformatTerms: " + reformatTerms);
+    //https://docs.mongodb.com/manual/reference/operator/aggregation/match/
+    var regexStr = "/"+reformatTerms+"/";
+    db.Product
+      //.find({name: reformatTerms})
+      .aggregate([{
+        $match: {
+          name: {
+            $regex: reformatTerms,
+            $options: 'i'// case insensitive (https://docs.mongodb.com/manual/reference/operator/query/regex/#op._S_regex)
+          }
+        }
+      }])
+      //.find(req.params.terms)
+      // .findOne({'email': creds[0], 'password': creds[1]})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  // findProductByBrand
+  // findProductByTag
   findStoreCommentsByUser: function(req, res) {
     db.StoreComment
       .findById(req.params.id)

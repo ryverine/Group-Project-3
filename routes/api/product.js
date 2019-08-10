@@ -4,7 +4,13 @@ const dbController = require("../../controllers/dbController");
 // const dbController = require("../../controllers/dbController");
 
 // Matches with "/api/books"
-router.route("/product/:id").get(dbController.findProductById);
+router
+  .route("/product/:id")
+  .get(dbController.findProductById);
+
+router
+  .route("/product/name/:terms")
+  .get(dbController.findProductByName);
 
 // Matches with "/api/books/:id"
 /*router
