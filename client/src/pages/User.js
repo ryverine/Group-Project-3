@@ -10,8 +10,10 @@ class User extends Component {
     state = {
         userID: "0",
         firstName: "",
+        lastName: "",
         email: "",
-        password: ""
+        password: "",
+        storecomments: []
     };
 
     handleInputChange = event => {
@@ -35,24 +37,17 @@ class User extends Component {
     loadUser = (email, password) => {
         console.log("loadUser("+email+","+password+")");
         API.getUser(this.state.email + "+" + this.state.password)
-          .then(res => {
-              console.log("getUser response:", res);
-              /*var data_firstName = res.data.firstName;
-              var data_lastName = res.data.lastName;
-              var data_email = res.data.email;
-              var data_id = res.data._id;
-
+            .then(res => 
+            {
+                console.log("getUser response:", res);
                 this.setState({ 
-                    id: res.data._id,
-                    name: res.data.name,
-                    addressLine1: res.data.addressLine1,
-                    addressLine2: res.data.addressLine2,
-                    city: res.data.city,
-                    state: res.data.state,
-                    zip: res.data.zip,
-                    description: res.data.description,
-                    products: res.data.products
-                });*/
+                    userID: res.data._id,
+                    firstName: res.data.firstName,
+                    lastName: res.data.lastName,
+                    email: res.data.email,
+                    password: res.data.password,
+                    storecomments: res.data.storecomments
+                });
             }
           )
           .catch(err => console.log(err));
@@ -70,18 +65,16 @@ class User extends Component {
     doSignOut = event =>
     {
         event.preventDefault();
-        console.log("Sign-Out");
-        console.log("Email: " + this.state.email);
-        console.log("Password: " + this.state.password);
-
         //var confirmSignOut = confirm("Are your sure you want to Sign-Out?");
-
         //if(confirmSignOut)
         //{
             this.setState({
-                userID: 0,
+                userID: "0",
+                firstName: "",
+                lastName: "",
                 email: "",
-                password: ""
+                password: "",
+                storecomments: []
             });
         //}
     };
@@ -96,7 +89,7 @@ class User extends Component {
                 <Col size="md-2"></Col>
                     <Col size="md-8">
                     <Jumbotron>
-                        User Profile
+                        <h1>User Profile</h1>
                     </Jumbotron>
                     <br />
                     <form>
@@ -137,17 +130,51 @@ class User extends Component {
                 <Col size="md-2"></Col>
                     <Col size="md-8">
                     <Jumbotron>
-                        <strong>User Profile</strong>
+                        <h1>User Profile</h1>
                     </Jumbotron>
                     <br />
                     <form>
                         <FormBtn
-                        disabled={!(this.state.email)}
                         onClick={this.doSignOut}
                         >
                         Sign-Out
                         </FormBtn>
                     </form>
+                    <div>
+                        <h4>Welcome back, {this.state.firstName}!</h4>
+                        <div>
+                            Name: {this.state.firstName} {this.state.lastName}
+                        </div>
+                        <div>
+                            Email: {this.state.email}
+                        </div>
+                        <div>
+                            <h4>Comment History</h4>
+                            <div>
+                            {this.state.storecomments.length ? (
+                                <div>
+                                    {this.state.storecomments.map(comment => (
+                                        <div key={comment._id}> 
+                                            <strong><a href={"store/" + comment.store}>Store Name</a></strong><br /> 
+                                            Posted: {comment.updated}<br /> 
+                                            {comment.comment}<br />
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div>No Comments</div>
+                            )}
+                        </div>
+
+
+
+
+
+
+
+
+                        </div>
+                    </div>
                     </Col>
                     <Col size="md-2"></Col>
                 </Row>

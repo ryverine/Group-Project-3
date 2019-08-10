@@ -49,7 +49,7 @@ class Saved extends Component {
                             <h1>Product Page</h1>
                         </Jumbotron>
                         
-                        <div><strong>{this.state.name}</strong></div>
+                        <h4>{this.state.name}</h4>
                        
                         <div>
                             {this.state.brand}
@@ -58,15 +58,15 @@ class Saved extends Component {
                             {this.state.description}
                         </div>
                         <div>
-                            <div><strong>Related Terms (tags)</strong></div>
+                            <h4>Related Terms (tags)</h4>
                             {this.state.type.length ? (
-                                <ul>
+                                <div>
                                     {this.state.type.map(tag => (
-                                        <li key={tag}> 
+                                        <div key={tag}> 
                                             {tag}
-                                        </li>
+                                        </div>
                                     ))}
-                                </ul>
+                                </div>
                             ) : (
                                 <div>No Tags</div>
                             )}

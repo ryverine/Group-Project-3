@@ -60,7 +60,7 @@ class Saved extends Component {
                         <Jumbotron>
                             <h1>Store Page</h1>
                         </Jumbotron>
-                        <div><strong>{this.state.name}</strong></div>
+                        <h4>{this.state.name}</h4>
                         <div>
                             {this.state.addressLine1} <br />
                             {this.state.addressLine2.length ? (

@@ -6,8 +6,8 @@ const userSchema = new Schema({
   lastName: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  comments: [{  type: Schema.Types.ObjectId,
-                ref: "storeComment"}]
+  storecomments: [{ type: Schema.Types.ObjectId,
+                    ref: "StoreComment"}]
 });
 
 const User = mongoose.model("User", userSchema);

@@ -18,8 +18,8 @@ const storeSchema = new Schema({
     location: {type: String, required: true },
     products: [{    type: Schema.Types.ObjectId,
                     ref: "Product"}],
-    storecomments: [{    type: Schema.Types.ObjectId,
-                    ref: "StoreComment"}]
+    storecomments: [{   type: Schema.Types.ObjectId,
+                        ref: "StoreComment"}]
 });
 
 const Store = mongoose.model("Store", storeSchema);

@@ -157,8 +157,7 @@ class Search extends Component {
             <Jumbotron>
                 {/* using image from public folder
                 <img src="headerImg.png" alt=""/> */}
-                Route 420
-                <br />
+                <h1>Route 420</h1>
             </Jumbotron>
             <form>
               <Input
