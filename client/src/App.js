@@ -4,7 +4,7 @@ import NoMatch from "./pages/NoMatch";
 import Header from "./components/Header";
 import Nav from "./components/Nav";
 import Search from "./pages/Search";
-import Saved from "./pages/Saved";
+//import Saved from "./pages/Saved";
 //import Signin from "./pages/Signin";
 import Locations from "./pages/Locations";
 import Store from "./pages/Store";
@@ -21,7 +21,7 @@ function App() {
         <Nav /> <br />
         <Switch>
           <Route exact path="/" component={Search} />
-          <Route exact path="/saved" component={Saved} />
+          {/*<Route exact path="/saved" component={Saved} />*/}
           <Route exact path="/user" component={User} />
           <Route exact path="/user/:credentials" component={User} />
           <Route exact path="/locations" component={Locations} />

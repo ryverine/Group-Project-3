@@ -16,7 +16,7 @@ export default {
   },
   searchProductByName: function(searchTerms) {
     console.log("(utils/API.js) searchProductByName: " + "/api/product/name/" + searchTerms);
-    return axios.get("/api/product/name/" + searchTerms)
+    return axios.get("/api/product/name/" + searchTerms);
   }
   /* 
   // Gets all books

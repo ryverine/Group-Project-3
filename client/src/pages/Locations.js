@@ -4,14 +4,17 @@ import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
 import { List, ListItem } from "../components/List";
+import UserContext from "../utils/userContext";
+import JumboTester from "../components/JumboTester";
 
 
-class Saved extends Component {
+class Locations extends Component {
   state = {
     locations: []
   };
 
   componentDidMount() {
+
     this.loadLocations();
   }
 
@@ -29,13 +32,20 @@ class Saved extends Component {
 
 render() {
     return (
+     
         <Container fluid>
             <Row>
                 <Col size="md-2"></Col>
                 <Col size="md-8">
+                    
                     <Jumbotron>
-                        <h1>All Locations</h1>
+                      <h1>All Locations</h1>
+                      <div>
+                        <h4>User Context Test</h4>
+                        <JumboTester />
+                      </div>
                     </Jumbotron>
+                  
                     <div>
                     {this.state.locations.length ? (
                         <div>
@@ -66,8 +76,9 @@ render() {
           <Col size="md-2"></Col>
         </Row>
       </Container>
+      
     );
   }
 }
 
-export default Saved;
+export default Locations;
