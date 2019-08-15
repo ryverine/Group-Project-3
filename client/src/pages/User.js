@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import SaveBtn from "../components/SaveBtn";
+// import SaveBtn from "../components/SaveBtn";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-
 import { Input, FormBtn } from "../components/Form";
+// import UserContext from "../utils/userContext";
 
 class User extends Component {
     state = {
@@ -31,23 +31,56 @@ class User extends Component {
         //var urlArray = url.split("/");
         //console.log("urlArray" + urlArray);
         // this.loadStore(urlArray[urlArray.length - 1]);
-        this.loadUser(this.state.email, this.state.password);
+
+        // check local storage
+        // if user data && userID != 0
+        if(JSON.parse(localStorage.getItem('currentUser')) != null)
+        {
+            //  -> put local storage data into state --- but state will not have data
+            var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            this.loadUser(currentUser.email, currentUser.password);
+        }
+        else
+        {
+            // -> use whatever state has
+            this.loadUser(this.state.email, this.state.password);
+        }
     }
 
     loadUser = (email, password) => {
         console.log("loadUser("+email+","+password+")");
-        API.getUser(this.state.email + "+" + this.state.password)
+        API.getUser(email + "+" + password)
             .then(res => 
             {
                 console.log("getUser response:", res);
-                this.setState({ 
-                    userID: res.data._id,
-                    firstName: res.data.firstName,
-                    lastName: res.data.lastName,
-                    email: res.data.email,
-                    password: res.data.password,
-                    storecomments: res.data.storecomments
-                });
+
+                if (res.data === null)
+                {
+                    console.log ("RES.DATA IS NULL");
+                }
+                else
+                {
+                    //empty local storage
+                    localStorage.removeItem("currentUser");
+                    // put data in local storage
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        userID: res.data._id,
+                        firstName: res.data.firstName,
+                        lastName: res.data.lastName,
+                        email: res.data.email,
+                        password: res.data.password
+                    }));
+                    // update state
+
+                    this.setState({ 
+                        userID: res.data._id,
+                        firstName: res.data.firstName,
+                        lastName: res.data.lastName,
+                        email: res.data.email,
+                        password: res.data.password,
+                        storecomments: res.data.storecomments
+                    });
+                }
             }
           )
           .catch(err => console.log(err));
@@ -68,6 +101,9 @@ class User extends Component {
         //var confirmSignOut = confirm("Are your sure you want to Sign-Out?");
         //if(confirmSignOut)
         //{
+            //empty local storage
+            localStorage.removeItem("currentUser");
+            //update state
             this.setState({
                 userID: "0",
                 firstName: "",
@@ -125,6 +161,7 @@ class User extends Component {
         else
         {
             return (
+           
                 <Container fluid>
                 <Row>
                 <Col size="md-2"></Col>
@@ -165,13 +202,6 @@ class User extends Component {
                                 <div>No Comments</div>
                             )}
                         </div>
-
-
-
-
-
-
-
 
                         </div>
                     </div>

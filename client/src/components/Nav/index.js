@@ -1,22 +1,9 @@
 import React from "react";
+// import UserContext from "../../utils/userContext";
 
 function Nav() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-      {/*
-      <a className="navbar-brand" href="/">
-        Google Books Search
-      </a>
-      <span>&nbsp;</span>
-      <span>&nbsp;</span>
-      <span>&nbsp;</span>
-      <a className="navbar-brand" href="/saved">
-        Your saved books
-      </a>
-      <span>&nbsp;</span>
-      <span>&nbsp;</span>
-      <span>&nbsp;</span>
-      */}
       <a className="navbar-brand" href="/locations">
         Locations
       </a>
@@ -27,7 +14,7 @@ function Nav() {
         Account
       </a>
     </nav>
-  );
+    )
 }
 
 export default Nav;

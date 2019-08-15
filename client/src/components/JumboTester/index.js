@@ -1,16 +1,12 @@
 import React from 'react';
-import UserContext from "../../utils/userContext"
+import UserContext from "../../utils/userContext";
 
 function JumboTester() {
   return (
     <UserContext.Consumer>
     {( user ) => (
         <div>
-            ID: {user.id} <br />
-            First Name: {user.firstName} <br />
-            Last Name: {user.lastName} <br />
-            Email: {user.email} <br />
-            Password: {user.password}
+            ID: {user.userID} <br />
         </div>
     )}
     </UserContext.Consumer>
