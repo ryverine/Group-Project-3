@@ -57,6 +57,20 @@ class User extends Component {
                 if (res.data === null)
                 {
                     console.log ("RES.DATA IS NULL");
+                    localStorage.removeItem("currentUser");
+
+                    // alert("Login Unsuccessful!");
+                    // cant do this here becasue it will fire on page load.
+                    // maybe return 
+
+                    this.setState({ 
+                        userID: "0",
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        password: "",
+                        storecomments: []
+                    });
                 }
                 else
                 {
