@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import SaveBtn from "../components/SaveBtn";
+//import SaveBtn from "../components/SaveBtn";
 import Jumbotron from "../components/Jumbotron";
+//import NewsFeed from "../components/NewsFeed";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-
 import { Input, FormBtn } from "../components/Form";
 
-import { ResultList, ResultItem } from "../components/Results";
+//import { ResultList, ResultItem } from "../components/Results";
 
 class Search extends Component {
   state = {
@@ -237,6 +237,9 @@ class Search extends Component {
                 <img src="headerImg.png" alt=""/> */}
                 <h1>Route 420</h1>
             </Jumbotron>
+            {/*<div>
+              <NewsFeed />
+            </div>*/}
             <form>
               <Input
                 value={this.state.searchTerms}

@@ -13,7 +13,9 @@ router
   .route("/user/:credentials")
   .get(dbController.loginUser);
 
-
+router
+  .route("/user/storeComment/:id")
+  .delete(dbController.removeStoreComment)
 
 /*router
   .route("/user/:id")

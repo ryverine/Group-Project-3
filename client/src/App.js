@@ -23,11 +23,15 @@ function App() {
           <Route exact path="/" component={Search} />
           {/*<Route exact path="/saved" component={Saved} />*/}
           <Route exact path="/user" component={User} />
+          <Route exact path="/user/storeComment/:id" component={User} />
           <Route exact path="/user/:credentials" component={User} />
           <Route exact path="/locations" component={Locations} />
           <Route exact path="/store/:id" component={Store} />
+          <Route exact path="/store/storeComment" component={Store} />
+          <Route exact path="/store/storeComment/:id" component={Store} />
           <Route exact path="/product/:id" component={Product} />
           <Route exact path="product/name/:terms" component={Product} />
+          
           {/*<Route exact path="search/brand/:terms" component={Search} />*/}
           {/*<Route exact path="search/tag/:terms" component={Search} />*/}
           {/* 

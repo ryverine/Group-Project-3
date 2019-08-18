@@ -4,6 +4,7 @@ import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
 import { Input, FormBtn } from "../components/Form";
+import DeleteBtn from "../components/DeleteBtn";
 // import UserContext from "../utils/userContext";
 
 class User extends Component {
@@ -129,6 +130,18 @@ class User extends Component {
         //}
     };
 
+    deleteComment = (commentID, e) => {
+        //event.preventDefault();
+        console.log("DELETE COMMENT:", commentID);
+        console.log("e:", e);
+
+        API.deleteComment(commentID, "user").then(res =>
+        {
+            console.log("COMMENT DELETED:", res);
+            this.loadUser(this.state.email, this.state.password);
+        });
+    }
+
     render() 
     {
         if(this.state.userID === "0")
@@ -209,6 +222,9 @@ class User extends Component {
                                             <strong><a href={"store/" + comment.store}>Store Name</a></strong><br /> 
                                             Posted: {comment.updated}<br /> 
                                             {comment.comment}<br />
+
+                                            <DeleteBtn onClick={(e) => this.deleteComment(comment._id, e)}>Delete</DeleteBtn>
+                                            
                                         </div>
                                     ))}
                                 </div>

@@ -38,12 +38,22 @@ module.exports = {
   },
   findStoreById: function(req, res) {
     // https://stackoverflow.com/questions/21069813/mongoose-multiple-query-populate-in-a-single-call
-    var populateQuery = [{path:'products', select:'_id name brand'}, {path:'storecomments', select:'user comment updated'}];
+    var populateQuery = [
+      {path:'products', select:'_id name brand'}, 
+        { path:'storecomments', 
+          //populate: { path: 'user' }
+          select:'user comment updated created'
+        }
+      ];
+
+    // sort populate: https://stackoverflow.com/questions/16352768/how-to-sort-a-populated-document-in-find-request
 
     db.Store
       .findById(req.params.id)
       .populate(populateQuery)
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        res.json(dbModel)
+      })
       .catch(err => res.status(422).json(err));
   },
   findProductById: function(req, res) {
@@ -59,7 +69,7 @@ module.exports = {
     var reformatTerms = req.params.terms.split('+').join(' ').trim();
     console.log("(controllers/dbController.js) reformatTerms: " + reformatTerms);
     //https://docs.mongodb.com/manual/reference/operator/aggregation/match/
-    var regexStr = "/"+reformatTerms+"/";
+    //var regexStr = "/"+reformatTerms+"/";
     db.Product
       //.find({name: reformatTerms})
       .aggregate([{
@@ -84,21 +94,38 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   createStoreComment: function(req, res) {
+    console.log("(controllers/dbController.js) createStoreComment: ", req.body);
     db.StoreComment
       .create(req.body)
+      .then(dbModel => {
+        //console.log("dbModel:", dbModel)
+        // add comment ref to store
+        db.Store.findByIdAndUpdate(dbModel.store,
+        { "$push": { "storecomments": dbModel._id }}).then(store => 
+            {
+              //console.log("*** comment to store:", store)
+              // add cooment ref to user
+              db.User.findByIdAndUpdate(dbModel.user,
+              { "$push": { "storecomments": dbModel._id }}).then(user =>   {
+                  //console.log("*** comment to user:", user)
+                });
+            });
+        res.json(dbModel)
+      })
+      .catch(err => res.status(422).json(err));
+  },
+  removeStoreComment: function(req, res) {
+    console.log("(controllers/dbController.js) removeStoreComment: ", req.params.id);
+    
+    db.StoreComment
+      .findById({ _id: req.params.id })
+      .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   updateStoreComment: function(req, res) {
     db.StoreComment
       .findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-  removeStoreComment: function(req, res) {
-    db.StoreComment
-      .findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }

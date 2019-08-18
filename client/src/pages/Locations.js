@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import DeleteBtn from "../components/DeleteBtn";
+//import DeleteBtn from "../components/DeleteBtn";
 import Jumbotron from "../components/Jumbotron";
+import NewsFeed from "../components/NewsFeed";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-import { List, ListItem } from "../components/List";
-import UserContext from "../utils/userContext";
-import JumboTester from "../components/JumboTester";
+//import { List, ListItem } from "../components/List";
+//import UserContext from "../utils/userContext";
+//import JumboTester from "../components/JumboTester";
 
 
 class Locations extends Component {
@@ -40,10 +41,6 @@ render() {
                     
                     <Jumbotron>
                       <h1>All Locations</h1>
-                      <div>
-                        <h4>User Context Test</h4>
-                        <JumboTester />
-                      </div>
                     </Jumbotron>
                   
                     <div>
@@ -72,6 +69,8 @@ render() {
                     <h3>No Locations to Display</h3>
                     )}
             </div>
+
+
           </Col>
           <Col size="md-2"></Col>
         </Row>

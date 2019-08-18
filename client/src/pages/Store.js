@@ -1,14 +1,18 @@
 import React, { Component } from "react";
-import DeleteBtn from "../components/DeleteBtn";
+//import DeleteBtn from "../components/DeleteBtn";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
-import { List, ListItem } from "../components/List";
+import { TextArea, FormBtn } from "../components/Form";
+import DeleteBtn from "../components/DeleteBtn";
+//import { List, ListItem } from "../components/List";
 
 
-class Saved extends Component {
+class Store extends Component {
     state = {
-        id: "",
+        currentUser: "0",
+        newComment: "",
+        storeID: "",
         name: "",
         addressLine1: "",
         addressLine2: "",
@@ -20,6 +24,13 @@ class Saved extends Component {
         storecomments: []
     };
 
+    handleInputChange = event => {
+        const { name, value } = event.target;
+        this.setState({
+          [name]: value
+        });
+      };
+
     componentDidMount() 
     {
         console.log("window.location.href = " + window.location.href);
@@ -30,28 +41,94 @@ class Saved extends Component {
         this.loadStore(urlArray[urlArray.length - 1]);
     }
 
-  loadStore = (storeId) => {
-    API.getStore(storeId)
-      .then(res => {
-          console.log("getStore response:", res);
-            this.setState({ 
-                id: res.data._id,
-                name: res.data.name,
-                addressLine1: res.data.addressLine1,
-                addressLine2: res.data.addressLine2,
-                city: res.data.city,
-                state: res.data.state,
-                zip: res.data.zip,
-                description: res.data.description,
-                products: res.data.products,
-                storecomments: res.data.storecomments
+    loadStore = (storeId) => {
+        var currentUserID = "0";
+        //check for local storage
+        if(JSON.parse(localStorage.getItem('currentUser')) != null)
+        {
+            var lsData = JSON.parse(localStorage.getItem('currentUser'));
+            currentUserID = lsData.userID;
+        }
+
+        API.getStore(storeId)
+        .then(res => {
+            console.log("getStore response:", res);
+
+
+                this.setState({ 
+                    currentUser: currentUserID,
+                    newComment: "",
+                    storeID: res.data._id,
+                    name: res.data.name,
+                    addressLine1: res.data.addressLine1,
+                    addressLine2: res.data.addressLine2,
+                    city: res.data.city,
+                    state: res.data.state,
+                    zip: res.data.zip,
+                    description: res.data.description,
+                    products: res.data.products,
+                    storecomments: res.data.storecomments
+                });
+            }
+        )
+        .catch(err => console.log(err));
+    };
+
+    submitComment = event => {
+        event.preventDefault();
+        // check value of current
+        if (this.state.currentUser === "0")
+        {
+            // tell user they need to sign in
+            console.log("SIGN IN TO COMMENT!")
+        }
+        else
+        {
+            var curDate = new Date(Date.now());
+            var commentObj = {
+                comment: this.state.newComment,
+                created: curDate,
+                updated: curDate,
+                user: this.state.currentUser,
+                store: this.state.storeID
+            }
+
+            console.log("=== NEW COMMENT SUBMMITED ===", commentObj);
+
+            API.submitComment(commentObj, "store").then(res => 
+            {
+                // this.setState({ newComment: ""});
+
+                /* 
+                    Problem: newly added comments do not populate.
+                    The comments are created in the storecomments collection
+                    But the comment ID is not added to the store in the stores collection.
+                */
+
+                // res.data._id = id of new comment
+
+                console.log("NEW COMMENT ADDED:", res);
+
+                this.loadStore(this.state.storeID);
             });
         }
-      )
-      .catch(err => console.log(err));
-  };
+    }
+
+    deleteComment = (commentID, e) => {
+        //event.preventDefault();
+        console.log("DELETE COMMENT:", commentID);
+        console.log("e:", e);
+
+        API.deleteComment(commentID, "store").then(res =>
+        {
+            console.log("COMMENT DELETED:", res);
+
+            this.loadStore(this.state.storeID);
+        });
+    }
 
     render() {
+        var theCurrentUser = this.state.currentUser;
         return (
             <Container fluid>
                 <Row>
@@ -91,6 +168,22 @@ class Saved extends Component {
 
                         <div>
                             <h4>Community Discussion</h4>
+                            <div>
+                                <form>
+                                    <TextArea
+                                    value={this.state.newComment}
+                                    onChange={this.handleInputChange}
+                                    name="newComment"
+                                    placeholder="Provide feedback..."
+                                    />
+                                    <FormBtn
+                                    disabled={!(this.state.newComment)}
+                                    onClick={this.submitComment}
+                                    >
+                                    Submit Comment
+                                    </FormBtn><br /><br />
+                                </form>
+                            </div>
                             {this.state.storecomments.length ? (
                                 <div>
                                     {this.state.storecomments.map(comment => (
@@ -98,6 +191,10 @@ class Saved extends Component {
                                             <strong>{comment.user} says...</strong><br /> 
                                             {comment.comment}<br />
                                             Posted: {comment.updated}
+                                            {theCurrentUser === comment.user ? 
+                                                <div>
+                                                    <DeleteBtn onClick={(e) => this.deleteComment(comment._id, e)}>Delete</DeleteBtn>
+                                                </div> : ''}
                                         </div>
                                     ))}
                                 </div>
@@ -113,4 +210,4 @@ class Saved extends Component {
     }
 }
 
-export default Saved;
+export default Store;

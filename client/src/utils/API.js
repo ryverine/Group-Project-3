@@ -17,6 +17,42 @@ export default {
   searchProductByName: function(searchTerms) {
     console.log("(utils/API.js) searchProductByName: " + "/api/product/name/" + searchTerms);
     return axios.get("/api/product/name/" + searchTerms);
+  },
+  submitComment: function(comment, actionSource) {
+    console.log("(utils/API.js) submitComment: ", comment);
+
+    if(actionSource === 'store')
+    {
+      // comment add or edit from store page
+      return axios.post("/api/store/storeComment", comment);
+    }
+    else if(actionSource === 'user')
+    {
+      // comment edit from user page
+    }
+    else
+    {
+      console.log("Unexpected actionSource: " + actionSource);
+      return null;
+    }
+  },
+  deleteComment: function(commentID, actionSource){
+    console.log("(utils/API.js) submitComment: ", commentID);
+    if(actionSource === 'store')
+    {
+      console.log("Unexpected actionSource: " + "STORE");
+      return axios.delete("/api/store/storeComment/" + commentID);
+    }
+    else if(actionSource === 'user')
+    {
+      console.log("Unexpected actionSource: " + "USER");
+      return axios.delete("/api/user/storeComment/" + commentID);
+    }
+    else
+    {
+      console.log("Unexpected actionSource: " + actionSource);
+      return null;
+    }
   }
   /* 
   // Gets all books

@@ -4,6 +4,7 @@ const locationRoutes = require("./locations");
 const storeRoutes = require("./store");
 const productRoutes = require("./product");
 const userRoutes = require("./user");
+// const storeCommentRoutes = require("./storeComment");
 // const searchRoutes = require("./search");
 
 // Book routes
@@ -16,5 +17,7 @@ router.use("/", storeRoutes);
 router.use("/", productRoutes);
 
 router.use("/", userRoutes);
+
+//router.use("/", storeCommentRoutes);
 
 module.exports = router;
