@@ -10,6 +10,7 @@ import DeleteBtn from "../components/DeleteBtn";
 class User extends Component {
     state = {
         userID: "0",
+        admin: false,
         firstName: "",
         lastName: "",
         email: "",
@@ -66,6 +67,7 @@ class User extends Component {
 
                     this.setState({ 
                         userID: "0",
+                        admin: false,
                         firstName: "",
                         lastName: "",
                         email: "",
@@ -80,6 +82,7 @@ class User extends Component {
                     // put data in local storage
                     localStorage.setItem('currentUser', JSON.stringify({
                         userID: res.data._id,
+                        admin: res.data.admin,
                         firstName: res.data.firstName,
                         lastName: res.data.lastName,
                         email: res.data.email,
@@ -89,6 +92,7 @@ class User extends Component {
 
                     this.setState({ 
                         userID: res.data._id,
+                        admin: res.data.admin,
                         firstName: res.data.firstName,
                         lastName: res.data.lastName,
                         email: res.data.email,
@@ -121,6 +125,7 @@ class User extends Component {
             //update state
             this.setState({
                 userID: "0",
+                admin: false,
                 firstName: "",
                 lastName: "",
                 email: "",
@@ -149,36 +154,36 @@ class User extends Component {
             return (
                 <Container fluid>
                 <Row>
-                <Col size="md-2"></Col>
+                    <Col size="md-2"></Col>
                     <Col size="md-8">
-                    <Jumbotron>
-                        <h1>User Profile</h1>
-                    </Jumbotron>
-                    <br />
-                    <form>
-                        <Input
-                        type="email"
-                        value={this.state.email}
-                        onChange={this.handleInputChange}
-                        name="email"
-                        placeholder="Email (required)"
-                        />
+                        <Jumbotron>
+                            <h1>User Profile</h1>
+                        </Jumbotron>
                         <br />
-                        <Input
-                        type="password"
-                        value={this.state.password}
-                        onChange={this.handleInputChange}
-                        name="password"
-                        placeholder="Password (required)"
-                        />
-                        <br />
-                        <FormBtn
-                        disabled={!(this.state.email)}
-                        onClick={this.doSignIn}
-                        >
-                        Sign-In
-                        </FormBtn>
-                    </form>
+                        <form>
+                            <Input
+                            type="email"
+                            value={this.state.email}
+                            onChange={this.handleInputChange}
+                            name="email"
+                            placeholder="Email (required)"
+                            />
+                            <br />
+                            <Input
+                            type="password"
+                            value={this.state.password}
+                            onChange={this.handleInputChange}
+                            name="password"
+                            placeholder="Password (required)"
+                            />
+                            <br />
+                            <FormBtn
+                            disabled={!(this.state.email)}
+                            onClick={this.doSignIn}
+                            >
+                            Sign-In
+                            </FormBtn>
+                        </form>
                     </Col>
                     <Col size="md-2"></Col>
                 </Row>
@@ -212,6 +217,13 @@ class User extends Component {
                         <div>
                             Email: {this.state.email}
                         </div>
+                        {this.state.admin ? (
+                            <div><strong>
+                                <a href="admin/">Admin Dashboard</a>
+                            </strong></div>
+                        ) : ( 
+                            <React.Fragment />
+                        )}
                         <div>
                             <h4>Comment History</h4>
                             <div>

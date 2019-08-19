@@ -54,7 +54,6 @@ class Store extends Component {
         .then(res => {
             console.log("getStore response:", res);
 
-
                 this.setState({ 
                     currentUser: currentUserID,
                     newComment: "",

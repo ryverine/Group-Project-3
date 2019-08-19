@@ -10,6 +10,7 @@ import Locations from "./pages/Locations";
 import Store from "./pages/Store";
 import Product from "./pages/Product";
 import User from "./pages/User";
+import Admin from "./pages/Admin";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route exact path="/" component={Search} />
           {/*<Route exact path="/saved" component={Saved} />*/}
           <Route exact path="/user" component={User} />
+          <Route exact path="/admin" component={Admin} />
           <Route exact path="/user/storeComment/:id" component={User} />
           <Route exact path="/user/:credentials" component={User} />
           <Route exact path="/locations" component={Locations} />

@@ -50,15 +50,15 @@ render() {
                             <div key={location._id}> 
                                 <strong>{location.city}, {location.state}</strong>
                                 {location.stores.length ? (
-                                    <ul>
+                                    <div>
                                     {location.stores.map(store => (
-                                        <li key={store._id}>
+                                        <div key={store._id}>
                                             <strong><a href={"store/" + store._id}>{store.name}</a></strong><br />
                                             {store.addressLine1}<br />
                                             {store.city}, {store.state} {store.zip}
-                                        </li>
+                                        </div>
                                     ))}
-                                    </ul>
+                                    </div>
                                     ) : (
                                     <div>No Stores for location</div>
                                     )}

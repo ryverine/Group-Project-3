@@ -15,7 +15,6 @@ router
   .route("/store/storeComment/:id")
   .delete(dbController.removeStoreComment)
 
-
 // Matches with "/api/books/:id"
 /*router
   .route("/:id")
